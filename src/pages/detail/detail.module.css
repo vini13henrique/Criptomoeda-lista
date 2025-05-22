@@ -1,0 +1,48 @@
+.container {
+    padding: 0 14px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.center {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 50px;
+}
+
+.content {
+    background-color: #0f0f0f;
+    margin: 24px 0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 50px;
+    gap: 10px;
+    border-radius: 15px;
+
+}
+
+.logo {
+    height: 60px;
+    width: 60px;
+    transition: all 1s;
+}
+
+.logo:hover {
+    transform: rotate(360deg);
+}
+
+.tdProfit {
+    font-weight: bold;
+    color: #12f98a;
+}
+
+.tdLoss {
+    font-weight: bold;
+    color: #f91257;
+}
