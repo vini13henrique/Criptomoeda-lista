@@ -21,50 +21,46 @@ export function Detail() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-
         async function getDetail() {
             try {
-                fetch(`https://rest.coincap.io/v3/assets/${id}?apiKey=278241676c5b9f2e836e608c3f1aac29ab497015fed799b4214fee4e397c6284`)
-                    .then(Response => Response.json())
-                    .then((data: DataProps) => {
+                const response = await fetch(`https://rest.coincap.io/v3/assets/${id}?apiKey=278241676c5b9f2e836e608c3f1aac29ab497015fed799b4214fee4e397c6284`)
+                const data: DataProps = await response.json()
 
-                        if ("error" in data) {
-                            navigate("/")
-                            return
-                        }
+                if ("error" in data) {
+                    navigate("/")
+                    return
+                }
 
+                const price = Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD"
+                })
+                const priceCompact = Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                    notation: "compact"
+                })
 
-                        const price = Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD"
-                        })
-                        const priceCompact = Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                            notation: "compact"
-                        })
+                const resultData = {
+                    ...data.data,
+                    formatedPrice: price.format(Number(data.data.priceUsd)),
+                    formatedMarket: priceCompact.format(Number(data.data.marketCapUsd)),
+                    formatedVolumeUsd: priceCompact.format(Number(data.data.volumeUsd24Hr))
+                }
 
-
-                        const resultData = {
-                            ...data.data,
-                            formatedPrice: price.format(Number(data.data.priceUsd)),
-                            formatedMarket: priceCompact.format(Number(data.data.marketCapUsd)),
-                            formatedVolumeUsd: priceCompact.format(Number(data.data.volumeUsd24Hr))
-                        }
-
-                        setCoin(resultData)
-                        console.log(resultData)
-                    })
+                setCoin(resultData)
             } catch (error) {
                 console.log(error)
                 navigate("/")
+            } finally {
+                setLoading(false)
             }
         }
 
         getDetail()
     }, [id])
 
-    if (!loading || !coin) {
+    if (loading || !coin) {
         return (
             <div className={styles.container}>
                 <h1 className={styles.center}>Carregando detalhes</h1>
